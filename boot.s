@@ -45,6 +45,11 @@ start:
     mov cx, 1
     int 0x10
 
+    ; notify the bios that we intend to use long mode so it can optimize itself
+    mov ax, 0xEC00
+    mov bl, 2
+    int 0x15
+
     in al, 0x92
     test al, 2      ; test if a20 is set and jump if it is
     jnz afterA20
