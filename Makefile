@@ -8,14 +8,14 @@ IMAGE=HypnOS.img
 
 all: boot
 
-boot: ./boot.s #./boot.c
+boot: ./boot.s ./boot2.c
 	nasm -fbin boot.s -o $(IMAGE)
 
-	#gcc -c boot.c -o boot.o $(CFLAGS)
-	#gcc boot.o -o boot.bin $(CFLAGS) -T linker.ld
+	gcc -c boot2.c -o boot2.o $(CFLAGS)
+	gcc boot2.o -o boot.bin $(CFLAGS) -T linker.ld
 
-	#truncate -s 4096 boot.bin
-	#cat boot.bin >> $(IMAGE)
+	truncate -s 4096 boot.bin
+	cat boot.bin >> $(IMAGE)
 	truncate -s 33553920 $(IMAGE)
 
 	#sudo mount $(IMAGE) disk -o gid=1000,uid=1000
@@ -23,7 +23,7 @@ boot: ./boot.s #./boot.c
 	#sudo umount ./disk
 
 clean:
-	rm -rf boot.bin boot.o $(IMAGE)
+	rm -rf boot.bin boot2.o $(IMAGE)
 
 run:
 	$(QEMU) -drive file=$(IMAGE),format=raw,index=0,media=disk

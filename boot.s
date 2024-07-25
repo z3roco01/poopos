@@ -107,7 +107,10 @@ pmode:
 
     ; set the stack pointer to 0x1000 giving 4096 bytes ( 4 kib ) of stack
     mov esp, 0x1000
+
+    jmp afterBoot
 end:
+    hlt
     jmp end
 
 
@@ -140,4 +143,5 @@ gdt:
 
 times 510 - ($-$$) db 0 ; pad up to 510 bytes
 dw 0xAA55 ; Marks sector as bootable
+
 afterBoot:

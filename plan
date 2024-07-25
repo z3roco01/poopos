@@ -4,7 +4,7 @@ stage 1:
       set a20 /
       get init gdt /
       jump to pmode /
-      jump to stage 2
+      jump to stage 2 /
 
 stage 2:
       get to long mode
