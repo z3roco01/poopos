@@ -10,9 +10,9 @@ my os im coding on stream ( [link to my twitch](https://www.twitch.tv/zzeroocol)
 - [X] load + jump to stage 2
 
 ### stage 2
-- [ ] get to long mode ( might happen in kernel but prob not )
 - [ ] read disk
 - [ ] find + boot kernel
+- [ ] get to long mode
 
 ## kernel
 tbd
