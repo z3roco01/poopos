@@ -18,9 +18,9 @@ boot: ./boot.s ./boot2.c
 	cat boot.bin >> $(IMAGE)
 	truncate -s 33553920 $(IMAGE)
 
-	#sudo mount $(IMAGE) disk -o gid=1000,uid=1000
-	#cp ./test.txt ./disk/test.txt
-	#sudo umount ./disk
+	sudo mount $(IMAGE) disk -o gid=1000,uid=1000
+	cp ./test.txt ./disk/test.txt
+	sudo umount ./disk
 
 clean:
 	rm -rf boot.bin boot2.o $(IMAGE)
