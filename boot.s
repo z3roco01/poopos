@@ -39,7 +39,7 @@ start:
     mov es, ax
     mov ss, ax
 
-    mov al, 0x41
+    mov al, 'A'
     mov ah, 0x0A
     mov bh, 0x00
     mov cx, 1
@@ -54,12 +54,38 @@ start:
 afterA20:
     lgdt [gdt.ptr]
 
-    mov al, 0x42
+    ; print B to the screen with the bios function
+    mov al, 'B'
     mov ah, 0x0A
     mov bh, 0x00
     mov cx, 1
     int 0x10
 
+    ; set the video mode to mode 13h making the bios function not work
+    mov ax, 0x13
+    int 0x10
+
+    ; Set PE bits of cr0
+    mov eax, cr0
+    or eax, 1
+    mov cr0, eax
+
+    ; Set all segement registers to point to the GDT data entry
+    mov ax, 0x10
+
+    mov ds, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
+    mov ss, ax
+
+    ; Long jump to the start of protected mode
+    jmp 8:pmode
+
+bits 32
+pmode:
+    ; put a white pixel in the very top left, showing weve made it this far
+    mov byte [0xA0000], 0x0F
 end:
     jmp end
 
@@ -93,5 +119,3 @@ gdt:
 
 times 510 - ($-$$) db 0 ; pad up to 510 bytes
 dw 0xAA55 ; Marks sector as bootable
-
-pastBoot:
