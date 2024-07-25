@@ -45,6 +45,19 @@ start:
     mov cx, 1
     int 0x10
 
+    ; read the 2nd stage stored in the hidden sectors just after this sector
+    ; then store it in mem just after this
+    xor ax, ax
+    mov es, ax
+
+    mov ah, 2
+    mov al, 8
+    mov ch, 0
+    mov cl, 2
+    mov dh, 0
+    mov bx, afterBoot
+    int 0x13
+
     ; notify the bios that we intend to use long mode so it can optimize itself
     mov ax, 0xEC00
     mov bl, 2
@@ -91,6 +104,9 @@ bits 32
 pmode:
     ; put a white pixel in the very top left, showing weve made it this far
     mov byte [0xA0000], 0x0F
+
+    ; set the stack pointer to 0x1000 giving 4096 bytes ( 4 kib ) of stack
+    mov esp, 0x1000
 end:
     jmp end
 
@@ -124,3 +140,4 @@ gdt:
 
 times 510 - ($-$$) db 0 ; pad up to 510 bytes
 dw 0xAA55 ; Marks sector as bootable
+afterBoot:
