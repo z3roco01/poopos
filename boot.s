@@ -80,8 +80,8 @@ afterA20:
     int 0x10
 
     ; set the video mode to mode 13h making the bios function not work
-    mov ax, 0x13
-    int 0x10
+    ; mov ax, 0x13
+    ; int 0x10
 
     ; Set PE bits of cr0
     mov eax, cr0
@@ -102,14 +102,22 @@ afterA20:
 
 bits 32
 pmode:
+    mov ax, 0x10
+    mov ds, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
+    mov ss, ax
+
     ; put a white pixel in the very top left, showing weve made it this far
     mov byte [0xA0000], 0x0F
 
-    ; set the stack pointer to 0x1000 giving 4096 bytes ( 4 kib ) of stack
-    mov esp, 0x1000
+    ; set the stack pointer to 0x1000 giving 8192 bytes ( 8 kib ) of stack
+    mov esp, 0x2000
 
     jmp afterBoot
 end:
+    cli
     hlt
     jmp end
 
